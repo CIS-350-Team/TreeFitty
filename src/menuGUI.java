@@ -58,7 +58,7 @@ public class menuGUI extends JPanel implements ActionListener {
 		
 		//Add image to mid:
 		main.add(checkers);
-		main.add(connectFour);
+		main.add(connectFour); 
 		
 		
 		//Finalize Frame
