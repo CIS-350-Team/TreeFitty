@@ -17,8 +17,8 @@ public class MainGUI {
 				
 		frame.getContentPane().add(panel);
 		frame.pack();
-		frame.setSize(350, 600);
+		frame.setSize(500, 600);
 		frame.setVisible(true);
+		
 	}
-	
 }
