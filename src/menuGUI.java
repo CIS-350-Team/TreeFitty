@@ -12,6 +12,7 @@ import java.io.IOException;
 
 /*********************************************************
 * Class to create the GUI for the menu
+* Created by Christian Yap
 **********************************************************/
 public class menuGUI extends JPanel implements ActionListener {
 
@@ -21,10 +22,17 @@ public class menuGUI extends JPanel implements ActionListener {
 	private JButton back, quit, checkers, connectFour;
 	private ImageIcon checkerImage, connectFourImage;
 	private ImageIcon arrow, boardWhite, boardRed, boardBlack;
+	private ImageIcon whitePiece, orangePiece, kingWhite, kingOrange;
 	private GameMode mode;
 	private JButton[][] board;
 	private JButton[][] boardTwo;
-
+	
+	//Games
+	private CheckerBoard checkerGame;
+	
+	/*********************************************************
+	* Constructor for GUI for both Games
+	**********************************************************/
 	public menuGUI() throws IOException{
 		
 		//Initialize mode
@@ -51,6 +59,11 @@ public class menuGUI extends JPanel implements ActionListener {
 		boardWhite = new ImageIcon("src\\cFourW.jpg");
 		boardBlack = new ImageIcon("src\\cFourB.jpg");
 		boardRed = new ImageIcon("src\\cFourR.jpg");
+		
+		 whitePiece = new ImageIcon("src\\whitePiece.png");
+		 orangePiece = new ImageIcon("src\\orangePiece.jpg");
+		 kingWhite = new ImageIcon("src\\kingWhite.jpg");
+		 kingOrange = new ImageIcon("src\\kingOrange.jpg");
 		
 		//Add ActionListeners:
 		back.addActionListener(this);
@@ -81,6 +94,9 @@ public class menuGUI extends JPanel implements ActionListener {
 		
 	}
 	
+	/*********************************************************
+	* Method: Creates the checkers board
+	**********************************************************/
 	public void createCheckers(){
 			
 		mode = GameMode.CHECKERSMODE;
@@ -104,8 +120,14 @@ public class menuGUI extends JPanel implements ActionListener {
 				checkerPanel.add(board[x][y]);
 			}
 		}
+		
+		//Create the checkers game:
+		checkerGame = new CheckerBoard();
 	}
 	
+	/*********************************************************
+	* Method: Creates the Connect Four Game
+	**********************************************************/
 	public void createConnect(){
 		
 		mode = GameMode.CONNECTFOURMODE;
@@ -131,6 +153,9 @@ public class menuGUI extends JPanel implements ActionListener {
 		}
 	}
 	
+	/*********************************************************
+	* Method: Allows player to go back to main screen
+	**********************************************************/
 	public void goBack(){
 		
 		if(mode == GameMode.CHECKERSMODE){
@@ -148,7 +173,9 @@ public class menuGUI extends JPanel implements ActionListener {
 		}
 	}
 
-	//Add actionPerformed to clicks:
+	/*********************************************************
+	* Method: Decides what happens when buttons are clicked
+	**********************************************************/
 	public void actionPerformed(ActionEvent event){
 		Component buttonPressed = (JComponent) event.getSource();
 		

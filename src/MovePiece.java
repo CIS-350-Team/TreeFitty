@@ -1,5 +1,3 @@
-package Checkers;
-
 /******************************************************************
  * This class is used to hold an Object that can be used to identify
  * a movement for a piece in checkers.
