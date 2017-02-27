@@ -61,9 +61,9 @@ public class menuGUI extends JPanel implements ActionListener {
 		boardRed = new ImageIcon("src\\cFourR.jpg");
 		
 		 whitePiece = new ImageIcon("src\\whitePiece.png");
-		 orangePiece = new ImageIcon("src\\orangePiece.jpg");
-		 kingWhite = new ImageIcon("src\\kingWhite.jpg");
-		 kingOrange = new ImageIcon("src\\kingOrange.jpg");
+		 orangePiece = new ImageIcon("src\\orangePiece.png");
+		 kingWhite = new ImageIcon("src\\kingWhite.png");
+		 kingOrange = new ImageIcon("src\\kingOrange.png");
 		
 		//Add ActionListeners:
 		back.addActionListener(this);
@@ -123,6 +123,39 @@ public class menuGUI extends JPanel implements ActionListener {
 		
 		//Create the checkers game:
 		checkerGame = new CheckerBoard();
+		
+		refreshBoard();
+	}
+	
+	public void refreshBoard(){
+		
+		//Checkers Mode
+		if(mode == GameMode.CHECKERSMODE){
+			int piece = -1;
+			//Icons for the game:
+			for(int x = 0; x < board.length; x ++){
+					piece = -1;
+				for(int y = 0; y < board.length; y++){
+					 piece = checkerGame.pieceAt(x, y);
+					if(piece == 1){
+						//White Piece:
+						board[x][y].setIcon(whitePiece);
+					}else if(piece == 2){
+						//White Piece, King:
+						board[x][y].setIcon(kingWhite);
+					}else if(piece == 3){
+						//Orange Piece:
+						board[x][y].setIcon(orangePiece);
+					}else if(piece == 4){
+						board[x][y].setIcon(kingOrange);
+					}else{
+						board[x][y].setIcon(null);
+					}
+				}
+			}
+		}
+		
+		
 	}
 	
 	/*********************************************************
