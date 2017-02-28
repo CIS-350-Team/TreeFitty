@@ -235,6 +235,7 @@ public class menuGUI extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent event){
 		Component buttonPressed = (JComponent) event.getSource();
 		boolean jump = false;
+		boolean end = false;
 		
 		if(buttonPressed == quit){
 			 System.exit(0);
@@ -294,9 +295,10 @@ public class menuGUI extends JPanel implements ActionListener {
 											&& (moves[i].toRow == checkersMovement.toRow)) {
 										checkerGame.makeMove(checkersMovement);
 										jump = checkersMovement.isJump();
+										end = true;
 									}
 								}
-								if (jump == false) {
+								if (jump == false && end == true) {
 									this.turnCounter++;
 								} else if (jump) {
 									// Double Jump
@@ -315,10 +317,12 @@ public class menuGUI extends JPanel implements ActionListener {
 									}
 								}
 							}
+							//Black's turn:
 							else if (((turnCounter % 2 == 1) && ((checkerGame.pieceAt(origX, origY) == 3)
 									|| (checkerGame.pieceAt(origX, origY) == 4)))) {
 								//reset value of jump
 								jump = false;
+								end = false;
 								// Check if the move is legal:
 								moves = checkerGame.getLegalMoves(3);
 								for (int i = 0; i < moves.length; i++) {
@@ -328,9 +332,10 @@ public class menuGUI extends JPanel implements ActionListener {
 											&& (moves[i].toRow == checkersMovement.toRow)) {
 										checkerGame.makeMove(checkersMovement);
 										jump = checkersMovement.isJump();
+										end = true;
 									}
 								}
-								if(jump == false){
+								if(jump == false && end == true){
 									this.turnCounter++;
 								} else if (jump){
 									//Double Jump
