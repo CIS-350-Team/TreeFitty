@@ -261,13 +261,13 @@ public class CheckerBoard {
 		 * array just big enough to hold all the legal moves, copy the legal
 		 * moves from the vector into the array, and return the array.
 		 */
+		
 		if (moves.size() == 0)
 			return null;
 		else {
 			MovePiece[] moveArray = new MovePiece[moves.size()];
 			for (int i = 0; i < moves.size(); i++){
 				moveArray[i] = (MovePiece) moves.elementAt(i);
-				System.out.println(moveArray[i].fromCol);
 			}
 			return moveArray;
 		}
