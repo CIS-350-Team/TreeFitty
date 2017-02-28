@@ -130,6 +130,7 @@ public class menuGUI extends JPanel implements ActionListener {
 		}
 		
 		//Create the checkers game:
+		turnCounter = 0;
 		checkerGame = new CheckerBoard();
 		checkersMovement = new MovePiece();
 		refreshBoard();
@@ -233,6 +234,8 @@ public class menuGUI extends JPanel implements ActionListener {
 	**********************************************************/
 	public void actionPerformed(ActionEvent event){
 		Component buttonPressed = (JComponent) event.getSource();
+		boolean jump = false;
+		boolean end = false;
 		
 		if(buttonPressed == quit){
 			 System.exit(0);
@@ -280,36 +283,76 @@ public class menuGUI extends JPanel implements ActionListener {
 						//Second Click
 						else{
 							checkersMovement.setMove(origX, origY, x, y);						
-							
 							//Check it's the player's turn:
-							if((turnCounter % 2 == 0) && ((checkerGame.pieceAt(origX, origY) == 1) || (checkerGame.pieceAt(origX, origY) == 2)) ){
-								//Check if the move is legal:
+							if ((turnCounter % 2 == 0) && ((checkerGame.pieceAt(origX, origY) == 1)
+									|| (checkerGame.pieceAt(origX, origY) == 2))) {
+								// Check if the move is legal:
 								moves = checkerGame.getLegalMoves(1);
-								for(int i = 0; i < moves.length; i++){										
-									if( (moves[i].fromCol == checkersMovement.fromCol) && (moves[i].fromRow == checkersMovement.fromRow) && (moves[i].toCol == checkersMovement.toCol) && (moves[i].toRow == checkersMovement.toRow)){
-										checkerGame.makeMove(checkersMovement);		
+								for (int i = 0; i < moves.length; i++) {
+									if ((moves[i].fromCol == checkersMovement.fromCol)
+											&& (moves[i].fromRow == checkersMovement.fromRow)
+											&& (moves[i].toCol == checkersMovement.toCol)
+											&& (moves[i].toRow == checkersMovement.toRow)) {
+										checkerGame.makeMove(checkersMovement);
+										jump = checkersMovement.isJump();
+										end = true;
 									}
 								}
-								//Double Jump
-								doubleJumps = checkerGame.getLegalJumpsFrom(1, x, y);
-								if(doubleJumps == null){
+								if (jump == false && end == true) {
 									this.turnCounter++;
-								}else{
-									for(int i = 0; i < doubleJumps.length; i++){										
-										if( (doubleJumps[i].fromCol == checkersMovement.fromCol) && (doubleJumps[i].fromRow == checkersMovement.fromRow) && (doubleJumps[i].toCol == checkersMovement.toCol) && (doubleJumps[i].toRow == checkersMovement.toRow)){
-											System.out.println("yes");
-											checkerGame.makeMove(checkersMovement);
+								} else if (jump) {
+									// Double Jump
+									doubleJumps = checkerGame.getLegalJumpsFrom(1, x, y);
+									if (doubleJumps == null) {
+										this.turnCounter++;
+									} else {
+										for (int i = 0; i < doubleJumps.length; i++) {
+											if ((doubleJumps[i].fromCol == checkersMovement.fromCol)
+													&& (doubleJumps[i].fromRow == checkersMovement.fromRow)
+													&& (doubleJumps[i].toCol == checkersMovement.toCol)
+													&& (doubleJumps[i].toRow == checkersMovement.toRow)) {
+												checkerGame.makeMove(checkersMovement);
+											}
 										}
 									}
 								}
-							}else if(((turnCounter % 2 == 1) && ((checkerGame.pieceAt(origX, origY) == 3) || (checkerGame.pieceAt(origX, origY) == 4)) )){
+							}
+							//Black's turn:
+							else if (((turnCounter % 2 == 1) && ((checkerGame.pieceAt(origX, origY) == 3)
+									|| (checkerGame.pieceAt(origX, origY) == 4)))) {
+								//reset value of jump
+								jump = false;
+								end = false;
+								// Check if the move is legal:
 								moves = checkerGame.getLegalMoves(3);
-								for(int i = 0; i < moves.length; i++){										
-									if( (moves[i].fromCol == checkersMovement.fromCol) && (moves[i].fromRow == checkersMovement.fromRow) && (moves[i].toCol == checkersMovement.toCol) && (moves[i].toRow == checkersMovement.toRow)){
+								for (int i = 0; i < moves.length; i++) {
+									if ((moves[i].fromCol == checkersMovement.fromCol)
+											&& (moves[i].fromRow == checkersMovement.fromRow)
+											&& (moves[i].toCol == checkersMovement.toCol)
+											&& (moves[i].toRow == checkersMovement.toRow)) {
 										checkerGame.makeMove(checkersMovement);
-										this.turnCounter++;
+										jump = checkersMovement.isJump();
+										end = true;
 									}
-								}				
+								}
+								if(jump == false && end == true){
+									this.turnCounter++;
+								} else if (jump){
+									//Double Jump
+									doubleJumps = checkerGame.getLegalJumpsFrom(3,  x,  y);
+									if(doubleJumps == null){
+										this.turnCounter++;
+									} else{
+										for (int i = 0; i < doubleJumps.length; i++) {
+											if ((doubleJumps[i].fromCol == checkersMovement.fromCol)
+													&& (doubleJumps[i].fromRow == checkersMovement.fromRow)
+													&& (doubleJumps[i].toCol == checkersMovement.toCol)
+													&& (doubleJumps[i].toRow == checkersMovement.toRow)) {
+												checkerGame.makeMove(checkersMovement);
+											}
+										}
+									}
+								}
 							}
 
 							//Repaint
@@ -324,6 +367,7 @@ public class menuGUI extends JPanel implements ActionListener {
 							//Housekeeping - update variables:
 							origX = -1;
 							origY = -1;
+							System.out.println(turnCounter);
 						}
 					}
 				}
