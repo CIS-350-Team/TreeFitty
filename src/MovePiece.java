@@ -10,18 +10,39 @@ public class MovePiece {
 	
 	/* ending tile */
 	int toRow, toCol;
-
 	
 	/*************************************************************
 	 * Constructor used to set the instance variables to desired
 	 * values
 	 * 
 	 ************************************************************/
-	MovePiece(int r1, int c1, int r2, int c2) {
+	public MovePiece(){
+		fromRow = -1;
+		fromCol = -1;
+		toRow = -1;
+		toCol = -1;
+	}
+
+	/*************************************************************
+	 * Constructor used to set the instance variables to desired
+	 * values
+	 * 
+	 ************************************************************/
+	public MovePiece(int r1, int c1, int r2, int c2) {
 		fromRow = r1;
 		fromCol = c1;
 		toRow = r2;
 		toCol = c2;
+	}
+	
+	/*************************************************************
+	 * Set Movement
+	 ************************************************************/
+	public void setMove(int r1, int c1, int r2, int c2){
+		this.fromRow = r1;
+		this.fromCol = c1;
+		this.toRow = r2;
+		this.toCol = c2;
 	}
 
 	

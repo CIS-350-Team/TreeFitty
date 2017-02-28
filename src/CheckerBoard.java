@@ -208,7 +208,7 @@ public class CheckerBoard {
 			playerKing = BLACK_KING;
 		
 		// create the vector that holds all legal move information
-		Vector moves = new Vector();
+		Vector<MovePiece> moves = new Vector<MovePiece>();
 
 		/*
 		 * First, check for any possible jumps. Look at each square on the
@@ -265,8 +265,10 @@ public class CheckerBoard {
 			return null;
 		else {
 			MovePiece[] moveArray = new MovePiece[moves.size()];
-			for (int i = 0; i < moves.size(); i++)
+			for (int i = 0; i < moves.size(); i++){
 				moveArray[i] = (MovePiece) moves.elementAt(i);
+				System.out.println(moveArray[i].fromCol);
+			}
 			return moveArray;
 		}
 	}
@@ -288,7 +290,7 @@ public class CheckerBoard {
 			playerKing = BLACK_KING;
 		
 		// create vector that holds all legal jumps
-		Vector moves = new Vector();
+		Vector<MovePiece> moves = new Vector<MovePiece>();
 		
 		/* Look at the desired tile and make sure that it contains
 		 * a piece belonging to the designated player. If it does,
@@ -315,8 +317,9 @@ public class CheckerBoard {
 		// into array and return array
 		else {
 			MovePiece[] moveArray = new MovePiece[moves.size()];
-			for (int i = 0; i < moves.size(); i++)
+			for (int i = 0; i < moves.size(); i++){
 				moveArray[i] = (MovePiece) moves.elementAt(i);
+			}
 			return moveArray;
 		}
 	}

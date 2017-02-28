@@ -26,9 +26,14 @@ public class menuGUI extends JPanel implements ActionListener {
 	private GameMode mode;
 	private JButton[][] board;
 	private JButton[][] boardTwo;
-	
 	//Games
 	private CheckerBoard checkerGame;
+	
+	//Movement
+	private int turnCounter = 0;
+	private MovePiece checkersMovement;
+	private int origX = -1;
+	private int origY = -1;
 	
 	/*********************************************************
 	* Constructor for GUI for both Games
@@ -123,12 +128,17 @@ public class menuGUI extends JPanel implements ActionListener {
 		
 		//Create the checkers game:
 		checkerGame = new CheckerBoard();
-		
+		checkersMovement = new MovePiece();
 		refreshBoard();
 	}
 	
+	/*********************************************************
+	* Method: Refresh the Board
+	**********************************************************/
 	public void refreshBoard(){
 		
+		int counterWhite = 0;
+		int counterBlack = 0;
 		//Checkers Mode
 		if(mode == GameMode.CHECKERSMODE){
 			int piece = -1;
@@ -140,18 +150,28 @@ public class menuGUI extends JPanel implements ActionListener {
 					if(piece == 1){
 						//White Piece:
 						board[x][y].setIcon(whitePiece);
+						counterWhite++;
 					}else if(piece == 2){
 						//White Piece, King:
 						board[x][y].setIcon(kingWhite);
+						counterWhite++;
 					}else if(piece == 3){
 						//Orange Piece:
 						board[x][y].setIcon(orangePiece);
+						counterBlack++;
 					}else if(piece == 4){
 						board[x][y].setIcon(kingOrange);
+						counterBlack++;
 					}else{
 						board[x][y].setIcon(null);
 					}
 				}
+			}
+			//Win Cases: 
+			if(counterBlack == 0){
+				JOptionPane.showMessageDialog(null, "Black has lost!");
+			}else if(counterWhite == 0){
+				JOptionPane.showMessageDialog(null, "White has lost!");
 			}
 		}
 		
@@ -205,7 +225,7 @@ public class menuGUI extends JPanel implements ActionListener {
 			add(main, BorderLayout.CENTER);
 		}
 	}
-
+	
 	/*********************************************************
 	* Method: Decides what happens when buttons are clicked
 	**********************************************************/
@@ -232,6 +252,64 @@ public class menuGUI extends JPanel implements ActionListener {
 			this.repaint();
 		}
 		
+		//Game Mode: Checkers
+		if(mode == GameMode.CHECKERSMODE){
+			//add action listeners
+			for(int x = 0; x < 8; x++){
+				for(int y = 0; y < 8; y++){
+					if(buttonPressed.equals(board[x][y])){ 		
+						//First Click
+						if(origX == -1 && origY == -1){
+						origX = x;
+						origY = y;	
+						board[x][y].setBackground(Color.yellow);
+						}
+						//Cancel Click
+						else if(origX == x && origY == y){
+							origX = -1;
+							origY = -1;
+							if((x % 2 == 1 && y %2 == 0) || (x % 2 == 0 && y %2 == 1)){
+								board[x][y].setBackground(Color.BLACK);
+							}else{
+								board[x][y].setBackground(Color.RED);
+							}
+						}
+						//Second Click
+						else{
+							checkersMovement.setMove(origX, origY, x, y);						
+							
+							
+							//Check it's the player's turn:
+							if((turnCounter % 2 == 0) && ((checkerGame.pieceAt(origX, origY) == 1) || (checkerGame.pieceAt(origX, origY) == 2)) ){
+								if(checkerGame.getLegalMoves(1) != null){
+								checkerGame.makeMove(checkersMovement);
+								this.turnCounter++;
+								}
+							}else if(((turnCounter % 2 == 1) && ((checkerGame.pieceAt(origX, origY) == 3) || (checkerGame.pieceAt(origX, origY) == 4)) )){
+								//if(checkerGame.getLegalMoves(turnCounter) != null){
+									checkerGame.makeMove(checkersMovement);
+									this.turnCounter++;
+								//}					
+							}
+
+							//Repaint
+							if((origX % 2 == 1 && origY %2 == 0) || (origX % 2 == 0 && origY %2 == 1)){
+								board[origX][origY].setBackground(Color.BLACK);
+							}else{
+								board[origX][origY].setBackground(Color.RED);
+							}
+							refreshBoard();
+							this.revalidate();
+							this.repaint();
+							
+							//Housekeeping - update variables:
+							origX = -1;
+							origY = -1;
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
