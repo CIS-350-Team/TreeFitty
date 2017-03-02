@@ -31,8 +31,8 @@ public class CheckerBoard {
 	   /********************************************************
 	    * Black King Spot.
 	    *********************************************************/
-	/* The Checkerboard */
 	private int[][] board;
+	/* The Checkerboard */
 	/*************************************************************
 	 * Constructor to create checkerboard and place pieces in starting
 	 * positions.

@@ -3,8 +3,7 @@
  * @author Christian Christian Yap
  *******************************************/
 public enum GameMode {
-	CHECKERSMODE, CONNECTFOURMODE, DEFAULT
-	/*
-	 * Game Modes: CheckerMode, Connect Four, or Default
-	 */
+
+    CHECKERSMODE, CONNECTFOURMODE, DEFAULT
+	/* Game Modes: CheckerMode, Connect Four, or Default*/
 }

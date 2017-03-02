@@ -11,7 +11,8 @@ import javax.swing.JFrame;
  **********************************/
 public class MainGUI {
     public static void main(String[] args) throws IOException{
-		JFrame frame = new JFrame("The Games");
+        /* Frame for the Game */
+        JFrame frame = new JFrame("The Games");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//Create a panel from chess panel.
 		menuGUI panel = new menuGUI();

@@ -62,4 +62,65 @@ public class MovePiece {
 			return false;
 		}
 	}
+
+	 /*************************************************************
+     * Setter Method for fromRow.
+     * @param x
+     ************************************************************/
+	public void setFromRow(int x){
+	    this.fromRow = x;
+	}
+
+	 /*************************************************************
+     * Setter Method for fromCol.
+     * @param x
+     ************************************************************/
+    public void setFromCol(int x){
+        this.fromCol = x;
+    }
+
+    /*************************************************************
+     * Setter Method for toRow.
+     * @param x
+     ************************************************************/
+    public void setToRow(int x){
+        this.toRow = x;
+    }
+
+    /*************************************************************
+     * Setter Method for toCol.
+     * @param x
+     ************************************************************/
+    public void setToCol(int x){
+        this.toCol = x;
+    }
+
+    /*************************************************************
+     * Geter Method for fromRow
+     ************************************************************/
+	public int getFromRow(){
+	    return this.fromRow;
+	}
+
+	 /*************************************************************
+     * Setter Method for fromCol.
+     ************************************************************/
+    public int getFromCol(){
+        return this.fromCol;
+    }
+    
+    /*************************************************************
+     * Getter Method for toRow.
+     ************************************************************/
+    public int getToRow(){
+        return this.toRow;
+    }
+    
+    /*************************************************************
+     * Getter Method for toColumn.
+     ************************************************************/
+    public int getToCol(){
+        return this.toCol;
+    }
+
 }

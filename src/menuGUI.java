@@ -366,8 +366,9 @@ public class menuGUI extends JPanel implements ActionListener {
 				if(move(player, 0)){
 					if(player.equalsIgnoreCase("red")){
 						player = "black";
-					}else
+					} else {
 						player = "red";
+					}
 				}
 			}
 			if(buttonPressed == boardTwo[0][1]){
@@ -442,7 +443,9 @@ public class menuGUI extends JPanel implements ActionListener {
 				if(boardTwo[i][j].getIcon().equals(boardBlack)){
 					for(int a = -1; a < 2; a++){
 						for(int b = -1; b < 2; b++){
-							if(a == 0 && b == 0);
+							if(a == 0 && b == 0){
+							    
+							}
 							else if(a+i > 7 || a+i < 0 || b+j > 6 || b+j < 0);
 							else if(boardTwo[i+a][j+b].getIcon().equals(boardBlack)){
 								if(2*a+i > 7 || 2*a+i < 0 || 2*b+j > 6 || 2*b+j < 0);
