@@ -1,17 +1,13 @@
 import java.awt.*;
-import java.awt.event.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.util.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /*********************************************************
-* Class to create the GUI for the menu
+* Class to create the GUI for the menu.
 * Created by Christian Yap
 **********************************************************/
 public class menuGUI extends JPanel implements ActionListener {
@@ -28,39 +24,34 @@ public class menuGUI extends JPanel implements ActionListener {
 	private JButton[][] boardTwo;
 	private CheckerBoard checkerGame;
 	private MovePiece[] moves, doubleJumps;
-	
+
 	//Movement
 	private int turnCounter = 0;
 	private MovePiece checkersMovement;
 	private int origX = -1;
 	private int origY = -1;
-	
+
 	//Connect Four:
 	private String player;
-	private boolean success;
-	
+
 	/*********************************************************
-	* Constructor for GUI for both Games
+	* Constructor for GUI for both Games.
 	**********************************************************/
 	public menuGUI() throws IOException{
-		
 		//Initialize mode
 		mode = GameMode.DEFAULT;
-		
 		//Initialize Panel: Add rows and columns to the JPanel:
 		top = new JPanel(new GridLayout(1,1));
 		middle = new JPanel(new GridLayout(1,1));
 		main = new JPanel(new GridLayout(2,1));
 		main.setBackground(Color.BLACK);
-		
-		
 		//Add details to the variables:
 		title = new JLabel("The Games");
 		back = new JButton("Back");
 		quit = new JButton("Quit");
 		checkers = new JButton("",null);
 		connectFour = new JButton("",null);
-				
+
 		//Add Images:
 		checkerImage = new ImageIcon("src\\checkers.jpg");
 		connectFourImage = new ImageIcon("src\\connect4.jpg");
@@ -72,47 +63,45 @@ public class menuGUI extends JPanel implements ActionListener {
 		orangePiece = new ImageIcon("src\\orangePiece.png");
 		kingWhite = new ImageIcon("src\\kingWhite.png");
 		kingOrange = new ImageIcon("src\\kingOrange.png");
-		
+
 		//Add ActionListeners:
 		back.addActionListener(this);
 		quit.addActionListener(this);
 		checkers.addActionListener(this);
 		connectFour.addActionListener(this);
-		
+
 		//Add images to main:
 		checkers.setIcon(checkerImage);
 		connectFour.setIcon(connectFourImage);
-		
 		//Add information on top:
 		top.add(title, BorderLayout.PAGE_START);
-		
+
 		//Add the buttons for bottom:
 		middle.add(back);
 		middle.add(quit);
-		
+
 		//Add image to mid:
 		main.add(checkers);
-		main.add(connectFour); 
-		 
-		
+		main.add(connectFour);
+
 		//Finalize Frame
 		add(top, BorderLayout.NORTH);
-		add(middle,BorderLayout.CENTER);	
+		add(middle,BorderLayout.CENTER);
 		add(main,BorderLayout.SOUTH);
-		
+
 	}
-	
+
 	/*********************************************************
-	* Method: Creates the checkers board
+	* Method: Creates the checkers board.
 	**********************************************************/
 	public void createCheckers(){
-			
+
 		mode = GameMode.CHECKERSMODE;
-		
+
 		remove(main);
 		checkerPanel =  new JPanel(new GridLayout(8,8));
 		add(checkerPanel, BorderLayout.CENTER);
-		
+
 		//Initialize the board.
 		board = new JButton[8][8];
 		for(int x = 0; x < board.length; x++){
@@ -128,19 +117,18 @@ public class menuGUI extends JPanel implements ActionListener {
 				checkerPanel.add(board[x][y]);
 			}
 		}
-		
 		//Create the checkers game:
 		turnCounter = 0;
 		checkerGame = new CheckerBoard();
 		checkersMovement = new MovePiece();
 		refreshBoard();
 	}
-	
+
 	/*********************************************************
-	* Method: Refresh the Board
+	* Method: Refresh the Board.
 	**********************************************************/
 	public void refreshBoard(){
-		
+
 		int counterWhite = 0;
 		int counterBlack = 0;
 		//Checkers Mode
@@ -171,26 +159,26 @@ public class menuGUI extends JPanel implements ActionListener {
 					}
 				}
 			}
-			//Win Cases: 
+			//Win Cases:
 			if(counterBlack == 0){
 				JOptionPane.showMessageDialog(null, "Black has lost!");
 			}else if(counterWhite == 0){
 				JOptionPane.showMessageDialog(null, "White has lost!");
 			}
-		}	
+		}
 	}
-	
+
 	/*********************************************************
-	* Method: Creates the Connect Four Game
+	* Method: Creates the Connect Four Game.
 	**********************************************************/
 	public void createConnect(){
-		
+
 		mode = GameMode.CONNECTFOURMODE;
-		
+
 		remove(main);
 		connectFourPanel =  new JPanel(new GridLayout(8,7));
 		add(connectFourPanel, BorderLayout.CENTER);
-		
+
 		//Initialize the board.
 		boardTwo = new JButton[8][7];
 		for(int x = 0; x < 8; x++){
@@ -208,12 +196,12 @@ public class menuGUI extends JPanel implements ActionListener {
 		}
 		player = "red";
 	}
-	
+
 	/*********************************************************
-	* Method: Allows player to go back to main screen
+	* Method: Allows player to go back to main screen.
 	**********************************************************/
 	public void goBack(){
-		
+
 		if(mode == GameMode.CHECKERSMODE){
 			checkerPanel.removeAll();
 			remove(checkerPanel);
@@ -228,15 +216,15 @@ public class menuGUI extends JPanel implements ActionListener {
 			add(main, BorderLayout.CENTER);
 		}
 	}
-	
+
 	/*********************************************************
-	* Method: Decides what happens when buttons are clicked
+	* Method: Decides what happens when buttons are clicked.
 	**********************************************************/
 	public void actionPerformed(ActionEvent event){
 		Component buttonPressed = (JComponent) event.getSource();
 		boolean jump = false;
 		boolean end = false;
-		
+
 		if(buttonPressed == quit){
 			 System.exit(0);
 		}else if(buttonPressed == checkers){
@@ -256,18 +244,17 @@ public class menuGUI extends JPanel implements ActionListener {
 			this.revalidate();
 			this.repaint();
 		}
-		
 		//Game Mode: Checkers
 		if(mode == GameMode.CHECKERSMODE){
-			
+
 			//add action listeners
 			for(int x = 0; x < 8; x++){
 				for(int y = 0; y < 8; y++){
-					if(buttonPressed.equals(board[x][y])){ 		
+					if(buttonPressed.equals(board[x][y])){
 						//First Click
 						if(origX == -1 && origY == -1){
 						origX = x;
-						origY = y;	
+						origY = y;
 						board[x][y].setBackground(Color.yellow);
 						}
 						//Cancel Click
@@ -282,7 +269,7 @@ public class menuGUI extends JPanel implements ActionListener {
 						}
 						//Second Click
 						else{
-							checkersMovement.setMove(origX, origY, x, y);						
+							checkersMovement.setMove(origX, origY, x, y);
 							//Check it's the player's turn:
 							if ((turnCounter % 2 == 0) && ((checkerGame.pieceAt(origX, origY) == 1)
 									|| (checkerGame.pieceAt(origX, origY) == 2))) {
@@ -374,7 +361,7 @@ public class menuGUI extends JPanel implements ActionListener {
 			}
 		}
 		//Game Mode: Connect Four
-		if( mode == GameMode.CONNECTFOURMODE){
+		if(mode == GameMode.CONNECTFOURMODE){
 			if(buttonPressed == boardTwo[0][0]){
 				if(move(player, 0)){
 					if(player.equalsIgnoreCase("red")){
@@ -444,9 +431,10 @@ public class menuGUI extends JPanel implements ActionListener {
 			}
 		}
 	}
-	
+
 	/*********************************************************
-	* Connect Four Method: Checks if a player has won the game
+	* Connect Four Method: Checks if a player has won the game.
+	* @return boolean
 	**********************************************************/
 	public boolean checkWin(){
 		for(int i = 1; i<8; i++){
@@ -489,9 +477,10 @@ public class menuGUI extends JPanel implements ActionListener {
 		}
 		return false;
 	}
-	
+
 	/*********************************************************
-	* Method: Movement for Connect Four
+	* Method: Movement for Connect Four.
+	* @return boolean
 	**********************************************************/
 	public boolean move(String p, int col){
 		for(int i = 7; i >=0; i--){
