@@ -4,7 +4,13 @@ import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
 
 /*********************************************************
 * Class to create the GUI for the menu.
@@ -15,7 +21,7 @@ public class menuGUI extends JPanel implements ActionListener {
 	//Instance Variables
 	private JPanel top, main, middle, checkerPanel, connectFourPanel;
 	private JLabel title;
-	private JButton back, quit, checkers, connectFour;
+	private JButton back, quit, checkers, connectFour, open, save;
 	private ImageIcon checkerImage, connectFourImage;
 	private ImageIcon arrow, boardWhite, boardRed, boardBlack;
 	private ImageIcon whitePiece, orangePiece, kingWhite, kingOrange;
@@ -24,6 +30,8 @@ public class menuGUI extends JPanel implements ActionListener {
 	private JButton[][] boardTwo;
 	private CheckerBoard checkerGame;
 	private MovePiece[] moves, doubleJumps;
+	
+	
 
 	//Movement
 	private int turnCounter = 0;
@@ -49,6 +57,8 @@ public class menuGUI extends JPanel implements ActionListener {
 		title = new JLabel("The Games");
 		back = new JButton("Back");
 		quit = new JButton("Quit");
+		open = new JButton("Open");
+		save = new JButton("Save");
 		checkers = new JButton("",null);
 		connectFour = new JButton("",null);
 
@@ -67,6 +77,8 @@ public class menuGUI extends JPanel implements ActionListener {
 		//Add ActionListeners:
 		back.addActionListener(this);
 		quit.addActionListener(this);
+		open.addActionListener(this);
+		save.addActionListener(this);
 		checkers.addActionListener(this);
 		connectFour.addActionListener(this);
 
@@ -78,7 +90,9 @@ public class menuGUI extends JPanel implements ActionListener {
 
 		//Add the buttons for bottom:
 		middle.add(back);
-		middle.add(quit);
+		middle.add(open);
+		middle.add(save);
+	    middle.add(quit);
 
 		//Add image to mid:
 		main.add(checkers);
@@ -88,6 +102,11 @@ public class menuGUI extends JPanel implements ActionListener {
 		add(top, BorderLayout.NORTH);
 		add(middle,BorderLayout.CENTER);
 		add(main,BorderLayout.SOUTH);
+		
+		//Disable back button:
+		back.setEnabled(false);
+		open.setEnabled(false);
+		save.setEnabled(false);
 
 	}
 
@@ -122,6 +141,9 @@ public class menuGUI extends JPanel implements ActionListener {
 		checkerGame = new CheckerBoard();
 		checkersMovement = new MovePiece();
 		refreshBoard();
+		back.setEnabled(true);
+		open.setEnabled(true);
+		save.setEnabled(true);
 	}
 
 	/*********************************************************
@@ -195,7 +217,143 @@ public class menuGUI extends JPanel implements ActionListener {
 			}
 		}
 		player = "red";
+		back.setEnabled(true);
+		open.setEnabled(true);
+		save.setEnabled(true);
 	}
+	
+	/*********************************************************
+	* Method: Save the Current Game
+	**********************************************************/
+    public void saveFile(){
+        
+        String fileName = "";
+        String boardLayout = "";
+
+        int piece = -1;
+        //If playing Checkers:
+        if(mode == GameMode.CHECKERSMODE){
+                        
+            fileName = "";
+            fileName = JOptionPane.showInputDialog ( "Save file as:"); 
+   
+            if(fileName != null){
+                fileName = fileName.concat(".txt");
+                //Get board Layout
+                for(int x = 0; x < board.length; x ++){
+                    piece = -1;
+                    for(int y = 0; y < board.length; y++){
+                         piece = checkerGame.pieceAt(x, y);
+                        if(piece == 1){
+                            //White Piece:
+                            boardLayout = boardLayout.concat("1 ");
+                        }else if(piece == 2){
+                            //White Piece, King:
+                            boardLayout = boardLayout.concat("2 ");
+                        }else if(piece == 3){
+                            //Orange Piece:
+                            boardLayout = boardLayout.concat("3 ");
+                        }else if(piece == 4){
+                            //Orange Piece, King:
+                            boardLayout = boardLayout.concat("4 ");
+                        }else{
+                            //Empty Board
+                            boardLayout = boardLayout.concat("5 ");
+                        }
+                    }
+                }
+                
+                try{
+                    PrintStream out = new PrintStream(new FileOutputStream(fileName));
+                    out.print(boardLayout);
+                    out.close();
+                    }catch(FileNotFoundException e) {
+                      e.printStackTrace();
+                    }
+                JOptionPane.showMessageDialog(null, "File saved as " +  fileName);
+            }
+        }
+    }
+    
+    /*************************************************
+     * Method to read the file
+     **************************************************/
+    public String readFile(String fileName) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        try {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                sb.append("\n");
+                line = br.readLine();
+            }
+            return sb.toString();
+        } finally {
+            br.close();
+        }
+    }
+    
+    /*********************************************************
+     * Method: Open a Game
+     **********************************************************/
+     public void openFile(){
+         
+         ArrayList<Integer> checkerPosition = new ArrayList <Integer>();
+         String openFile = "";
+         String input = "";
+         
+         //In Checkers mode
+         if(mode == GameMode.CHECKERSMODE){
+             openFile = JOptionPane.showInputDialog("Enter file name: " );
+                
+             if(openFile != null){
+                 openFile = openFile.concat(".txt");
+                 JOptionPane.showMessageDialog(null, "Trying to open file: " +  openFile);
+          
+                 try{
+                     input = readFile(openFile);
+                 }catch(Exception e){
+                     JOptionPane.showMessageDialog(null, "Failed to open file");
+                 }
+                 
+                  for(int i = 0; i < input.length(); i++){
+                      if(input.charAt(i) == '5'){
+                          checkerPosition.add(0);
+                          i++;
+                      }else if(input.charAt(i) == '1'){
+                          checkerPosition.add(1);
+                          i++;
+                      }else if(input.charAt(i) == '2'){
+                          checkerPosition.add(2);
+                          i++;
+                      }else if(input.charAt(i) == '3'){
+                          checkerPosition.add(3);
+                          i++;
+                      }else if(input.charAt(i) == '4'){
+                          checkerPosition.add(4);
+                          i++;
+                      }
+                  }
+                  
+                  for(int x = 0; x < board.length; x ++){
+                      for(int y = 0; y < board.length; y++){
+                          board[x][y].setIcon(null);
+                      }
+                  }              
+                  for(int x = 0; x < 8; x++){
+                      for(int y = 0; y < 8; y++){
+                          checkerGame.setPieceAt(x, y, checkerPosition.get( ((x*8)+y) ) );
+                      }
+                  }
+                  refreshBoard();
+                  this.repaint();
+                  this.revalidate();
+             }
+         }
+         //End checkers mode        
+     }
 
 	/*********************************************************
 	* Method: Allows player to go back to main screen.
@@ -215,6 +373,9 @@ public class menuGUI extends JPanel implements ActionListener {
 			main.add(connectFour);
 			add(main, BorderLayout.CENTER);
 		}
+		back.setEnabled(false);
+		open.setEnabled(false);
+		save.setEnabled(false);
 	}
 
 	/*********************************************************
@@ -246,6 +407,14 @@ public class menuGUI extends JPanel implements ActionListener {
 		}
 		//Game Mode: Checkers
 		if(mode == GameMode.CHECKERSMODE){
+		    
+		    if(buttonPressed == save){
+		        saveFile();
+		    }
+		    
+		    if(buttonPressed == open){
+		        openFile();
+		    }
 
 			//add action listeners
 			for(int x = 0; x < 8; x++){
