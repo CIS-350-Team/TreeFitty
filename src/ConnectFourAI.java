@@ -1,53 +1,55 @@
 import java.util.Random;
 public class ConnectFourAI {
-	
-	Random rand = new Random();
-	ConnectFour connectF = new ConnectFour();
-	
-	private int[][] boardOne;
-	private int[][] boardTwo;
-	private static final int EMPTY = 0;
-	private static final int RED = 1;
-	private static final int BLACK = 2;
-	
-	
-	public ConnectFourAI(){
-		for(int i = 0; i < 7; i++){
-			for(int j = 0; j < 7; j++){
-				boardOne[i][j] = EMPTY;
-			}
-		}
-		boardTwo = boardOne;
-	}
-	
-	public int aiMove(int[][] board){
-		boardOne = board;
-		for(int i = 0; i < 7; i++){
-			boardTwo = boardOne;
-			boardTwo = move(i, boardTwo);
-			if(checkWin(boardTwo)){
-				return i;
-			}
-		}
-		
-		return rand.nextInt(7);
-	}
-	
-	private int[][] move(int col, int[][] board){
-		if(col >= 0 && col < 7){
+    
+    Random ran = new Random();
+    ConnectFour connectF = new ConnectFour();
+    
+    private int[][] boardOne;
+    private int[][] boardTwo;
+    private static final int EMPTY = 0;
+    private static final int RED = 1;
+    private static final int BLACK = 2;
+    
+    
+    public ConnectFourAI(){
+        boardOne = new int[7][7];
+        boardTwo = new int[7][7];
+        for(int i = 0; i < 7; i++){
+            for(int j = 0; j < 7; j++){
+                boardOne[i][j] = EMPTY;
+            }
+        }
+        boardTwo = boardOne;
+    }
+    
+    public int aiMove(int[][] board){
+        boardOne = board;
+        for(int i = 0; i < 7; i++){
+            boardTwo = boardOne;
+            boardTwo = move(i, boardTwo);
+            if(win(boardTwo)){
+                return i;
+            }
+        }
+        
+        return ran.nextInt(7);
+    }
+    
+    private int[][] move(int col, int[][] board){
+        if(col >= 0 && col < 7){
             for(int i = 6; i >= 0; i--){
                 if(board[i][col] == EMPTY){
-                    board[i][col] = 2;
+                    board[i][col] = BLACK;
                 }
             }
         }
         
         return board;
-	}
-	
-	private boolean checkWin(int[][] board){
-		
-		//cycle through board
+    }
+    
+    private boolean win(int[][] board){
+        
+        //cycle through board
         for(int i = 1; i < 7; i++){
             for(int j = 0; j < 7; j++){
                 //if black piece found
@@ -106,5 +108,5 @@ public class ConnectFourAI {
             }
         }
         return false;
-    }	
+    }   
 }

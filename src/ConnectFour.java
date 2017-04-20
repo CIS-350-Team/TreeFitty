@@ -54,6 +54,7 @@ public class ConnectFour{
     }
     
     
+    
     /***************************************************
      * Move- this method takes a column from the menu
      * class and places the current player's piece there,
@@ -62,16 +63,26 @@ public class ConnectFour{
      * @return boolean - whether the move was made.
      **************************************************/
     public boolean move(int col){
-        if(col >= 0 && col < 7){
-            for(int i = 6; i >= 0; i--){
-                if(board[i][col] == EMPTY){
-                    board[i][col] = player;
-                    return true;
+            if(col >= 0 && col < 7){
+                for(int i = 6; i >= 0; i--){
+                    if(board[i][col] == EMPTY){
+                        board[i][col] = player;
+                        return true;
+                    }
                 }
             }
-        }
+        
         
         return false;
+    }
+    
+    /***************************************************
+     * get Board - returns the game board
+     * @return int[][] board - returns the board
+     **************************************************/
+    
+    public int[][] getBoard(){
+        return board;
     }
     
     /***************************************************

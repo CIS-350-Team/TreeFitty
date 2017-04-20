@@ -30,6 +30,7 @@ public class menuGUI extends JPanel implements ActionListener {
     private JButton[][] boardTwo;
     private CheckerBoard checkerGame;
     private MovePiece[] moves, doubleJumps;
+    private ConnectFourAI ai;
 
 
 
@@ -243,6 +244,9 @@ public class menuGUI extends JPanel implements ActionListener {
         back.setEnabled(true);
         open.setEnabled(true);
         save.setEnabled(true);
+        
+        //Start AI:
+        ai = new ConnectFourAI();
     }
 
     /*********************************************************
@@ -668,7 +672,10 @@ public class menuGUI extends JPanel implements ActionListener {
                         else{
                             boardTwo[connectF.getSpot(i)][i].setIcon(boardRed);
                         }
-                        connectF.changePlayer();
+                   connectF.changePlayer();   
+                        //if(connectF.move(ai.aiMove(connectF.getBoard()))){
+                         //   connectF.changePlayer();
+                        //}
                     }
                 }
             }
