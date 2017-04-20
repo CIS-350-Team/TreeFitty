@@ -150,7 +150,7 @@ public class menuGUI extends JPanel implements ActionListener {
         save.setEnabled(true);
         
         //Start the AI:
-        checkersAI = new CheckersAI(checkerGame, 3);
+        checkersAI = new CheckersAI(checkerGame);
         checkersAI.setCurrentBoard(checkerGame);
         
         input = JOptionPane.showInputDialog ( "Type '1' for 1 player or '2' player"); 
