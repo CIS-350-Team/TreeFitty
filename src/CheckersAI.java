@@ -19,6 +19,7 @@ public class CheckersAI {
 	
 	/* an array to save all the safe moves the player can make */
 	private Vector<MovePiece> safeMoves;
+	private Vector<MovePiece> riskyMoves;
 	
 	/**************************************************************
      * Set the currentBoard
@@ -77,7 +78,6 @@ public class CheckersAI {
 		// vector mid-loop
 		Vector<MovePiece> legalMoves = currentBoard.getLegalMovesAI(player);
 		Vector<MovePiece> legalMoves2 = currentBoard.getLegalMovesAI(player);
-		
 		
 		// begin looping through all of the legal moves the desired
 		//player can make
@@ -211,5 +211,20 @@ public class CheckersAI {
 		// pick that move and return it
 		return safeMoves.elementAt(theMove);
 			
+	}
+	
+	 /**************************************************************
+     * Method to Move AI randomly
+     **************************************************************/
+	public MovePiece makeRiskyMove(){
+	    
+	    int theMove = 0;
+	    riskyMoves = new Vector();
+	    riskyMoves = currentBoard.getLegalMovesAI(3);
+	    theMove = rand.nextInt(riskyMoves.size());
+	    
+	    
+	    
+	    return riskyMoves.get(theMove);
 	}
 }

@@ -1,7 +1,5 @@
 import java.awt.*;
-
 import javax.swing.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -10,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.time.Clock;
 import java.util.ArrayList;
 
 /*********************************************************
@@ -30,19 +29,21 @@ public class menuGUI extends JPanel implements ActionListener {
     private JButton[][] boardTwo;
     private CheckerBoard checkerGame;
     private MovePiece[] moves, doubleJumps;
-    private ConnectFourAI ai;
-
-
 
     //Movement
     private int turnCounter = 0;
     private MovePiece checkersMovement;
+    private MovePiece aiMovement;
     private int origX = -1;
     private int origY = -1;
 
     //Connect Four:
-
     private ConnectFour connectF;
+    
+    //Create AI:
+    private ConnectFourAI ai;
+    private CheckersAI checkersAI;
+    private String input;
 
     /*********************************************************
      * Constructor for GUI for both Games.
@@ -116,6 +117,7 @@ public class menuGUI extends JPanel implements ActionListener {
      * Method: Creates the checkers board.
      **********************************************************/
     public void createCheckers(){
+        
 
         mode = GameMode.CHECKERSMODE;
 
@@ -146,6 +148,13 @@ public class menuGUI extends JPanel implements ActionListener {
         back.setEnabled(true);
         open.setEnabled(true);
         save.setEnabled(true);
+        
+        //Start the AI:
+        checkersAI = new CheckersAI(checkerGame, 3);
+        checkersAI.setCurrentBoard(checkerGame);
+        
+        input = JOptionPane.showInputDialog ( "Type '1' for 1 player or '2' player"); 
+        
     }
 
     /*********************************************************
@@ -368,7 +377,6 @@ public class menuGUI extends JPanel implements ActionListener {
         ArrayList<Integer> connectPosition = new ArrayList <Integer>();
         String openFile = "";
         String input = "";
-        int count, inputX;
 
         //In Checkers mode
         if(mode == GameMode.CHECKERSMODE){
@@ -595,9 +603,8 @@ public class menuGUI extends JPanel implements ActionListener {
                                         }
                                     }
                                 }
-                            }
-                            //Black's turn:
-                            else if (((turnCounter % 2 == 1) && ((checkerGame.pieceAt(origX, origY) == 3)
+                            } //Black's (AI) turn:
+                            else if (input.equalsIgnoreCase("2") && ((turnCounter % 2 == 1) && ((checkerGame.pieceAt(origX, origY) == 3)
                                     || (checkerGame.pieceAt(origX, origY) == 4)))) {
                                 //reset value of jump
                                 jump = false;
@@ -634,6 +641,45 @@ public class menuGUI extends JPanel implements ActionListener {
                                 }
                             }
 
+                            checkersAI.setCurrentBoard(checkerGame);
+                            aiMovement = checkersAI.makeRiskyMove();
+                            
+                            if ( input.equalsIgnoreCase("1") && ((turnCounter % 2 == 1) && ((checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 3)
+                                    || (checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 4)))) {
+                                //reset value of jump
+                                jump = false;
+                                end = false;
+                                // Check if the move is legal:
+                                moves = checkerGame.getLegalMoves(3);
+                                for (int i = 0; i < moves.length; i++) {
+                                    if ((moves[i].fromCol == aiMovement.fromCol)
+                                            && (moves[i].fromRow == aiMovement.fromRow)
+                                            && (moves[i].toCol == aiMovement.toCol)
+                                            && (moves[i].toRow == aiMovement.toRow)) {
+                                        
+                                        checkerGame.makeMove(aiMovement);
+                                        jump = aiMovement.isJump();
+                                        end = true;
+                                    }
+                                }
+
+                                if(jump == false && end == true){
+                                    this.turnCounter++;
+                                } else if (jump){
+                                    //Double Jump
+                                    checkersAI.setCurrentBoard(checkerGame);
+                                    doubleJumps = checkerGame.getLegalJumpsFrom(3,  aiMovement.toRow,  aiMovement.toCol);
+                                    if(doubleJumps == null){
+                                        this.turnCounter++;
+                                    } else{
+                                       aiMovement = checkersAI.makeRiskyMove();
+                                        for (int i = 0; i < doubleJumps.length; i++) {
+                                                checkerGame.makeMove(aiMovement);
+                                        }
+                                    }
+                                }
+                            }
+
                             //Repaint
                             if((origX % 2 == 1 && origY %2 == 0) || (origX % 2 == 0 && origY %2 == 1)){
                                 board[origX][origY].setBackground(Color.BLACK);
@@ -646,7 +692,6 @@ public class menuGUI extends JPanel implements ActionListener {
                             //Housekeeping - update variables:
                             origX = -1;
                             origY = -1;
-                            System.out.println(turnCounter);
                         }
                     }
                 }
