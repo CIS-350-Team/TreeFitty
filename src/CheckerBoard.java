@@ -142,7 +142,7 @@ public class CheckerBoard {
 	 * Private helper method used to determine if a move being attempted
 	 * is actually legal
 	 ************************************************************/
-	private boolean canMove(int player, int r1, int c1, int r2, int c2) {
+	public boolean canMove(int player, int r1, int c1, int r2, int c2) {
 		// Make sure attempted move is in bounds
 		if (r2 < 0 || r2 >= 8 || c2 < 0 || c2 >= 8)
 			return false;

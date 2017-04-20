@@ -570,6 +570,7 @@ public class menuGUI extends JPanel implements ActionListener {
                         //Second Click
                         else{
                             checkersMovement.setMove(origX, origY, x, y);
+                            System.out.println(origX + " " + origY + "" + x + "" + y);
                             //Check it's the player's turn:
                             if ((turnCounter % 2 == 0) && ((checkerGame.pieceAt(origX, origY) == 1)
                                     || (checkerGame.pieceAt(origX, origY) == 2))) {
