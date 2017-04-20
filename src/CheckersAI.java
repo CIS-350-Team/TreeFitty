@@ -15,24 +15,38 @@ public class CheckersAI {
 	private CheckerBoard currentBoard;
 	
 	/* a copy of just the board from currentBoard */
-	private int playerAI;
+	private  int playerAI;
 	
 	/* an array to save all the safe moves the player can make */
 	private Vector<MovePiece> safeMoves;
+	
+	/**************************************************************
+     * Set the currentBoard
+     **************************************************************/
+	public void setCurrentBoard(CheckerBoard updateBoard){
+	    currentBoard = updateBoard;
+	}
+	
+	/**************************************************************
+     * Get the current Board
+     **************************************************************/
+	public CheckerBoard getCurrentBoard(){
+	    return currentBoard;
+	}
 	
 	/**************************************************************
 	 * Constructor to set the current board state for the AI to work
 	 * with.
 	 * 
 	 **************************************************************/
-	public CheckersAI(CheckerBoard newBoard){
+	public CheckersAI(CheckerBoard newBoard, int playerAI){
 		// set current board to the desired board
 		currentBoard = newBoard;
+		this.playerAI = playerAI;
 	}
 	
 	/**************************************************************
 	 * Method to set the AI as desired player
-	 * 
 	 **************************************************************/
 	public void setArrayHold(int player){
 		// set AI as desired player
@@ -183,7 +197,6 @@ public class CheckersAI {
 	/**************************************************************
 	 * Method used to have the AI actually choose a move from the
 	 * list of safe moves and then make it.
-	 * 
 	 **************************************************************/
 	public MovePiece makeMove(){
 		// call findSafeMoves method to narrow search
@@ -199,12 +212,4 @@ public class CheckersAI {
 		return safeMoves.elementAt(theMove);
 			
 	}
-	
-	
-	
-	
-	
-	
-	
-
 }
