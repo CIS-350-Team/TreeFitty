@@ -40,6 +40,21 @@ public class ConnectFour{
     }
     
     /***************************************************
+     * Get Board Piece
+     **************************************************/
+    public int pieceAt(int x, int y){
+        return board[x][y];
+    }
+    
+    /***************************************************
+     * Get Board Piece
+     **************************************************/
+    public void setPieceAt(int x, int y, int piece){
+        this.board[x][y] = piece;
+    }
+    
+    
+    /***************************************************
      * Move- this method takes a column from the menu
      * class and places the current player's piece there,
      * @param int col - the column the user wishes to 

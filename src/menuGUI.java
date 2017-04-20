@@ -189,6 +189,28 @@ public class menuGUI extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(null, "White has lost!");
             }
         }
+        
+        if(mode == GameMode.CONNECTFOURMODE){
+            int piece = -1;
+            //Icons for the game:
+            for(int x = 1; x < 7; x++){
+                piece = -1;
+                for(int y = 0; y < 7; y++){
+                    piece = connectF.pieceAt(x, y);
+                    if(piece == 1){
+                        //White Piece:
+                        boardTwo[x+1][y].setIcon(boardRed);
+                        counterWhite++;
+                    }else if(piece == 2){
+                        //Black Piece
+                        boardTwo[x+1][y].setIcon(boardBlack);
+                        counterWhite++;
+                    }else if(piece == 0){
+                        boardTwo[x+1][y].setIcon(boardWhite);
+                    }
+                }
+            }
+        }
     }
 
     /*********************************************************
@@ -274,6 +296,43 @@ public class menuGUI extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(null, "File saved as " +  fileName);
             }
         }
+        
+        //Connect Four Gamemode:
+        if(mode == GameMode.CONNECTFOURMODE){
+
+            fileName = "";
+            fileName = JOptionPane.showInputDialog ( "Save file as:"); 
+
+            if(fileName != null){
+                fileName = fileName.concat(".txt");
+                //Get board Layout
+                for(int x = 0; x < 7; x++){
+                    piece = -1;
+                    for(int y = 0; y < 7; y++){
+                        piece = connectF.pieceAt(x, y);
+                        if(piece == 1){
+                            //Red:
+                            boardLayout = boardLayout.concat("1 ");
+                        }else if(piece == 2){
+                            //Black:
+                            boardLayout = boardLayout.concat("2 ");
+                        }else{
+                            //Empty Board
+                            boardLayout = boardLayout.concat("0 ");
+                        }
+                    }
+                }
+
+                try{
+                    PrintStream out = new PrintStream(new FileOutputStream(fileName));
+                    out.print(boardLayout);
+                    out.close();
+                }catch(FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                JOptionPane.showMessageDialog(null, "File saved as " +  fileName);
+            }
+        }
     }
 
     /*************************************************
@@ -302,8 +361,10 @@ public class menuGUI extends JPanel implements ActionListener {
     public void openFile(){
 
         ArrayList<Integer> checkerPosition = new ArrayList <Integer>();
+        ArrayList<Integer> connectPosition = new ArrayList <Integer>();
         String openFile = "";
         String input = "";
+        int count, inputX;
 
         //In Checkers mode
         if(mode == GameMode.CHECKERSMODE){
@@ -353,7 +414,64 @@ public class menuGUI extends JPanel implements ActionListener {
                 this.revalidate();
             }
         }
-        //End checkers mode        
+        //End checkers mode
+        
+      //In Connect Four mode
+        if(mode == GameMode.CONNECTFOURMODE){
+            openFile = JOptionPane.showInputDialog("Enter file name: " );
+
+            if(openFile != null){
+                openFile = openFile.concat(".txt");
+                JOptionPane.showMessageDialog(null, "Trying to open file: " +  openFile);
+
+                try{
+                    input = readFile(openFile);
+                }catch(Exception e){
+                    JOptionPane.showMessageDialog(null, "Failed to open file");
+                }
+
+                for(int i = 0; i < input.length(); i++){
+                    if(input.charAt(i) == '0'){
+                        connectPosition.add(0);
+                        i++;
+                    }else if(input.charAt(i) == '1'){
+                        connectPosition.add(1);
+                        i++;
+                    }else if(input.charAt(i) == '2'){
+                        connectPosition.add(2);
+                        i++;
+                    }
+                }
+
+                for(int x = 1; x < 7; x ++){
+                    for(int y = 0; y < 7; y++){
+                        boardTwo[x][y].setIcon(boardWhite);
+                    }
+                }              
+                
+                
+                int counter = 0;
+                for(int x = 0; x < 7; x ++){
+                    for(int y = 0; y < 7; y++){
+                        connectF.setPieceAt(x, y, connectPosition.get(counter));
+                        counter++;
+                    }
+
+                }
+                
+                for(int x = 0; x < 7; x ++){
+                    for(int y = 0; y < 7; y++){
+                        System.out.print(connectF.pieceAt(x, y));
+                    }
+                    System.out.println();
+                }    
+                
+                refreshBoard();
+                this.repaint();
+                this.revalidate();
+            }
+        }
+        //End checkers mode 
     }
 
     /*********************************************************
@@ -533,6 +651,14 @@ public class menuGUI extends JPanel implements ActionListener {
         //Game Mode: Connect Four
         if(mode == GameMode.CONNECTFOURMODE){
             
+            if(buttonPressed == save){
+                saveFile();
+            }
+            
+            if(buttonPressed == open){
+                openFile();
+            }
+            
             for(int i = 0; i < 7; i++){
                 if(buttonPressed == boardTwo[0][i]){
                     if(connectF.move(i)){
@@ -563,11 +689,4 @@ public class menuGUI extends JPanel implements ActionListener {
             }
         }
     }
-
-
-    /*********************************************************
-     * Method: Movement for Connect Four.
-     * @return boolean
-     **********************************************************/
-
 }
