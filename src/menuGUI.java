@@ -16,10 +16,6 @@ import java.util.ArrayList;
  **********************************************************/
 public class menuGUI extends JPanel implements ActionListener {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
     //Instance Variables
     private JPanel top, main, middle, checkerPanel, connectFourPanel;
     private JLabel title;
@@ -32,7 +28,6 @@ public class menuGUI extends JPanel implements ActionListener {
     private JButton[][] boardTwo;
     private CheckerBoard checkerGame;
     private MovePiece[] moves, doubleJumps;
-    private boolean over;
 
     //Movement
     private int turnCounter = 0;
@@ -43,7 +38,7 @@ public class menuGUI extends JPanel implements ActionListener {
 
     //Connect Four:
     private ConnectFour connectF;
-    
+
     //Create AI:
     private ConnectFourAI ai;
     private CheckersAI checkersAI;
@@ -121,7 +116,7 @@ public class menuGUI extends JPanel implements ActionListener {
      * Method: Creates the checkers board.
      **********************************************************/
     public void createCheckers(){
-        
+
 
         mode = GameMode.CHECKERSMODE;
 
@@ -152,14 +147,13 @@ public class menuGUI extends JPanel implements ActionListener {
         back.setEnabled(true);
         open.setEnabled(true);
         save.setEnabled(true);
-        
+
         //Start the AI:
         checkersAI = new CheckersAI(checkerGame);
         checkersAI.setCurrentBoard(checkerGame);
-        over = false;
-        
+
         input = JOptionPane.showInputDialog ( "Type '1' for 1 player or '2' player"); 
-        
+
     }
 
     /*********************************************************
@@ -200,13 +194,11 @@ public class menuGUI extends JPanel implements ActionListener {
             //Win Cases:
             if(counterBlack == 0){
                 JOptionPane.showMessageDialog(null, "Black has lost!");
-                this.over = true;
             }else if(counterWhite == 0){
                 JOptionPane.showMessageDialog(null, "White has lost!");
-                this.over = true;
             }
         }
-        
+
         if(mode == GameMode.CONNECTFOURMODE){
             int piece = -1;
             //Icons for the game:
@@ -260,8 +252,9 @@ public class menuGUI extends JPanel implements ActionListener {
         back.setEnabled(true);
         open.setEnabled(true);
         save.setEnabled(true);
-        
 
+        //Start AI:
+        ai = new ConnectFourAI(connectF);
     }
 
     /*********************************************************
@@ -315,7 +308,7 @@ public class menuGUI extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(null, "File saved as " +  fileName);
             }
         }
-        
+
         //Connect Four Gamemode:
         if(mode == GameMode.CONNECTFOURMODE){
 
@@ -433,8 +426,8 @@ public class menuGUI extends JPanel implements ActionListener {
             }
         }
         //End checkers mode
-        
-      //In Connect Four mode
+
+        //In Connect Four mode
         if(mode == GameMode.CONNECTFOURMODE){
             openFile = JOptionPane.showInputDialog("Enter file name: " );
 
@@ -466,8 +459,8 @@ public class menuGUI extends JPanel implements ActionListener {
                         boardTwo[x][y].setIcon(boardWhite);
                     }
                 }              
-                
-                
+
+
                 int counter = 0;
                 for(int x = 0; x < 7; x ++){
                     for(int y = 0; y < 7; y++){
@@ -476,14 +469,14 @@ public class menuGUI extends JPanel implements ActionListener {
                     }
 
                 }
-                
+
                 for(int x = 0; x < 7; x ++){
                     for(int y = 0; y < 7; y++){
                         System.out.print(connectF.pieceAt(x, y));
                     }
                     System.out.println();
                 }    
-                
+
                 refreshBoard();
                 this.repaint();
                 this.revalidate();
@@ -649,14 +642,9 @@ public class menuGUI extends JPanel implements ActionListener {
                             }
 
                             checkersAI.setCurrentBoard(checkerGame);
-                            refreshBoard();
-                            this.revalidate();
-                            this.repaint();
-                            if(this.over == false){
-                                aiMovement = checkersAI.makeRiskyMove();
-                            }
-                            
-                            if (aiMovement != null && input.equalsIgnoreCase("1") && ((turnCounter % 2 == 1) && ((checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 3)
+                            aiMovement = checkersAI.makeRiskyMove();
+
+                            if ( input.equalsIgnoreCase("1") && ((turnCounter % 2 == 1) && ((checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 3)
                                     || (checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 4)))) {
                                 //reset value of jump
                                 jump = false;
@@ -668,7 +656,7 @@ public class menuGUI extends JPanel implements ActionListener {
                                             && (moves[i].fromRow == aiMovement.fromRow)
                                             && (moves[i].toCol == aiMovement.toCol)
                                             && (moves[i].toRow == aiMovement.toRow)) {
-                                        
+
                                         checkerGame.makeMove(aiMovement);
                                         jump = aiMovement.isJump();
                                         end = true;
@@ -684,9 +672,9 @@ public class menuGUI extends JPanel implements ActionListener {
                                     if(doubleJumps == null){
                                         this.turnCounter++;
                                     } else{
-                                       aiMovement = checkersAI.makeRiskyMove();
+                                        aiMovement = checkersAI.makeRiskyMove();
                                         for (int i = 0; i < doubleJumps.length; i++) {
-                                                checkerGame.makeMove(aiMovement);
+                                            checkerGame.makeMove(aiMovement);
                                         }
                                     }
                                 }
@@ -698,15 +686,12 @@ public class menuGUI extends JPanel implements ActionListener {
                             }else{
                                 board[origX][origY].setBackground(Color.RED);
                             }
-                           
-                            if(this.over == false){ 
-                                refreshBoard();
-                                this.revalidate();
-                                this.repaint();
-                                //Housekeeping - update variables:
-                                origX = -1;
-                                origY = -1;
-                            }
+                            refreshBoard();
+                            this.revalidate();
+                            this.repaint();
+                            //Housekeeping - update variables:
+                            origX = -1;
+                            origY = -1;
                         }
                     }
                 }
@@ -714,46 +699,83 @@ public class menuGUI extends JPanel implements ActionListener {
         }
         //Game Mode: Connect Four
         if(mode == GameMode.CONNECTFOURMODE){
-            
+            //TimeUnit time = new TimeUnit();
             if(buttonPressed == save){
                 saveFile();
             }
-            
+
             if(buttonPressed == open){
                 openFile();
             }
-            
+
             for(int i = 0; i < 7; i++){
+                //search for the button clicked
                 if(buttonPressed == boardTwo[0][i]){
-                    if(connectF.move(i)){
-                        if(connectF.getPlayer() == 2){
-                            boardTwo[connectF.getSpot(i)][i].setIcon(boardBlack);
+                    //if player makes valid move
+                    if(connectF.move(i)){              
+                        updateDisplay();
+                        connectF.changePlayer();
+                        System.out.println(connectF.getPlayer());
+                        if(connectF.checkWin() == 1){
+                            JOptionPane.showInputDialog("Red Won");
+                            resetBoard();
                         }
-                        else{
-                            boardTwo[connectF.getSpot(i)][i].setIcon(boardRed);
+                        else if(connectF.getPlayer() == 2){
+                            if(ai.aiMove()){
+                                
+                                updateDisplay();
+                                
+                                if(connectF.checkWin() == 2){
+                                    JOptionPane.showInputDialog("Black Won");
+                                    resetBoard();
+                                }
+                                else{
+                                    connectF.changePlayer();
+                                }
+                            }
+
                         }
-                   connectF.changePlayer();   
-                        //if(connectF.move(ai.aiMove(connectF.getBoard()))){
-                         //   connectF.changePlayer();
-                        //}
+                        break;
                     }
                 }
             }
 
-            if(connectF.checkWin()){
-                if(connectF.getPlayer() == 1){
-                    JOptionPane.showInputDialog("Black Won");
+
+
+        }
+    }
+
+    /***************************************************
+     * update Display- cycles through the board, and sets
+     * icons accordingly.
+     **************************************************/
+    private void updateDisplay(){
+        int[][] temp = connectF.getBoard();
+        for(int i = 0; i < 7 ; i++){
+            for(int j = 0; j < 7; j++){
+                if(temp[i][j] == 0){
+                    boardTwo[i+1][j].setIcon(boardWhite);
                 }
-                else{
-                    JOptionPane.showInputDialog("Red Won");
+                if(temp[i][j] == 1){
+                    boardTwo[i+1][j].setIcon(boardRed);
                 }
-                connectFourPanel.removeAll();
-                remove(connectFourPanel);
-                main.remove(connectFour);
-                createConnect();
-                this.revalidate();
-                this.repaint();
+                if(temp[i][j] == 2){
+                    boardTwo[i+1][j].setIcon(boardBlack);
+                }
             }
         }
+    }
+
+    /***************************************************
+     * reset Board, when a game is over, resets the board
+     * for next game.
+     **************************************************/
+    private void resetBoard(){
+        connectFourPanel.removeAll();
+        remove(connectFourPanel);
+        main.remove(connectFour);
+        createConnect();
+        this.revalidate();
+        this.repaint();
     }
 }
