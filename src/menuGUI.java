@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.time.Clock;
 import java.util.ArrayList;
 
 /*********************************************************
@@ -17,6 +16,10 @@ import java.util.ArrayList;
  **********************************************************/
 public class menuGUI extends JPanel implements ActionListener {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     //Instance Variables
     private JPanel top, main, middle, checkerPanel, connectFourPanel;
     private JLabel title;
@@ -29,6 +32,7 @@ public class menuGUI extends JPanel implements ActionListener {
     private JButton[][] boardTwo;
     private CheckerBoard checkerGame;
     private MovePiece[] moves, doubleJumps;
+    private boolean over;
 
     //Movement
     private int turnCounter = 0;
@@ -152,6 +156,7 @@ public class menuGUI extends JPanel implements ActionListener {
         //Start the AI:
         checkersAI = new CheckersAI(checkerGame);
         checkersAI.setCurrentBoard(checkerGame);
+        over = false;
         
         input = JOptionPane.showInputDialog ( "Type '1' for 1 player or '2' player"); 
         
@@ -195,8 +200,10 @@ public class menuGUI extends JPanel implements ActionListener {
             //Win Cases:
             if(counterBlack == 0){
                 JOptionPane.showMessageDialog(null, "Black has lost!");
+                this.over = true;
             }else if(counterWhite == 0){
                 JOptionPane.showMessageDialog(null, "White has lost!");
+                this.over = true;
             }
         }
         
@@ -254,8 +261,7 @@ public class menuGUI extends JPanel implements ActionListener {
         open.setEnabled(true);
         save.setEnabled(true);
         
-        //Start AI:
-        ai = new ConnectFourAI();
+
     }
 
     /*********************************************************
@@ -643,9 +649,14 @@ public class menuGUI extends JPanel implements ActionListener {
                             }
 
                             checkersAI.setCurrentBoard(checkerGame);
-                            aiMovement = checkersAI.makeRiskyMove();
+                            refreshBoard();
+                            this.revalidate();
+                            this.repaint();
+                            if(this.over == false){
+                                aiMovement = checkersAI.makeRiskyMove();
+                            }
                             
-                            if ( input.equalsIgnoreCase("1") && ((turnCounter % 2 == 1) && ((checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 3)
+                            if (aiMovement != null && input.equalsIgnoreCase("1") && ((turnCounter % 2 == 1) && ((checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 3)
                                     || (checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 4)))) {
                                 //reset value of jump
                                 jump = false;
@@ -687,12 +698,15 @@ public class menuGUI extends JPanel implements ActionListener {
                             }else{
                                 board[origX][origY].setBackground(Color.RED);
                             }
-                            refreshBoard();
-                            this.revalidate();
-                            this.repaint();
-                            //Housekeeping - update variables:
-                            origX = -1;
-                            origY = -1;
+                           
+                            if(this.over == false){ 
+                                refreshBoard();
+                                this.revalidate();
+                                this.repaint();
+                                //Housekeeping - update variables:
+                                origX = -1;
+                                origY = -1;
+                            }
                         }
                     }
                 }

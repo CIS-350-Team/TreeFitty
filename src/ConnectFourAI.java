@@ -1,112 +1,69 @@
 import java.util.Random;
 public class ConnectFourAI {
-    
+/*********************************************************
+ * This is the ai class for connect four.
+ * @author Joel Brodzinski
+ ********************************************************/
     Random ran = new Random();
-    ConnectFour connectF = new ConnectFour();
+    ConnectFour connectF;
+    ConnectFour temp;
     
-    private int[][] boardOne;
-    private int[][] boardTwo;
+    /****************************************************
+     * Instance variables for the ai.
+     ***************************************************/
+    private int[][] boardOne = new int[7][7];
     private static final int EMPTY = 0;
     private static final int RED = 1;
     private static final int BLACK = 2;
-    
-    
-    public ConnectFourAI(){
-        boardOne = new int[7][7];
-        boardTwo = new int[7][7];
+
+    /****************************************************
+     * Constructor, sets the board uses the Connect four
+     * @param ConnectFour- takes a connect four instance
+     * (the same instance from the menuGUI) and keeps it's
+     * own reference.
+     ***************************************************/
+    public ConnectFourAI(ConnectFour f){
         for(int i = 0; i < 7; i++){
             for(int j = 0; j < 7; j++){
                 boardOne[i][j] = EMPTY;
             }
         }
-        boardTwo = boardOne;
+        connectF = f;
+        temp = new ConnectFour();
     }
     
-    public int aiMove(int[][] board){
-        boardOne = board;
-        for(int i = 0; i < 7; i++){
-            boardTwo = boardOne;
-            boardTwo = move(i, boardTwo);
-            if(win(boardTwo)){
-                return i;
-            }
-        }
-        
-        return ran.nextInt(7);
+    /****************************************************
+     * set Board- this method sets the game board to be 
+     * used in the ai.
+     * @param int[][]- takes a board in to set the board
+     ***************************************************/
+    private void setBoard(int[][] b){
+        boardOne = b;
     }
-    
-    private int[][] move(int col, int[][] board){
-        if(col >= 0 && col < 7){
-            for(int i = 6; i >= 0; i--){
-                if(board[i][col] == EMPTY){
-                    board[i][col] = BLACK;
-                }
-            }
+
+    /****************************************************
+     * ai Move- uses copy of the instance, and trys out 
+     * different moves before making a move.
+     * @return boolean returns if a move was made.
+     ***************************************************/
+    public boolean aiMove(){
+//        for(int i = 0; i < 7; i++){
+//            temp.setBoard(connectF.getBoard());
+//            temp.setPlayer(2);
+//            if(temp.move(i)){
+//                if(temp.checkWin() == BLACK){
+//                    connectF.move(i);
+//                    return true;
+//                }
+//            }
+//        }
+        int x = ran.nextInt(7);
+        while(connectF.move(x) == false){
+            x = ran.nextInt(7);
         }
         
-        return board;
+       
+        return true;
+
     }
-    
-    private boolean win(int[][] board){
-        
-        //cycle through board
-        for(int i = 1; i < 7; i++){
-            for(int j = 0; j < 7; j++){
-                //if black piece found
-                if(board[i][j] == BLACK){
-                    //cycle through neighbors
-                    for(int a = -1; a < 2; a++){
-                        for(int b = -1; b < 2; b++){
-                            
-                            if(a == 0 && b == 0); //if original spot, do nothing
-                            
-                            //checking to make sure it stays in bounds
-                            else if(a+i > 6 || a+i < 0 || b+j > 6 || b+j < 0);
-                            
-                            //if another black piece is found
-                            else if(board[i+a][j+b] == BLACK){
-                                
-                                //checking to make sure it stays in bounds
-                                if(2*a+i > 6 || 2*a+i < 0 || 2*b+j > 6 || 2*b+j < 0);
-                                
-                                //check if a third black piece is found
-                                else if(board[i+a+a][j+b+b] == BLACK){
-                                    
-                                    //checking to make sure it stays in bounds
-                                    if(3*a+i > 6 || 3*a+i < 0 || 3*b+j > 6 || 3*b+j < 0);
-                                    
-                                    //check if a fourth black piece is found
-                                    else if(board[i+a+a+a][j+b+b+b] == BLACK){
-                                        //return true because black won!
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                //mirrored to check if red won!
-                if(board[i][j] == RED){
-                    for(int a = -1; a < 2; a++){
-                        for(int b = -1; b < 2; b++){
-                            if(a == 0 && b == 0){
-                                
-                            }
-                            else if(a+i > 6 || a+i < 0 || b+j > 6 || b+j < 0);
-                            else if(board[i+a][j+b] == RED){
-                                if(2*a+i > 6 || 2*a+i < 0 || 2*b+j > 6 || 2*b+j < 0);
-                                else if(board[i+a+a][j+b+b] == RED){
-                                    if(3*a+i > 6 || 3*a+i < 0 || 3*b+j > 6 || 3*b+j < 0);
-                                    else if(board[i+a+a+a][j+b+b+b] == RED){
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }   
 }

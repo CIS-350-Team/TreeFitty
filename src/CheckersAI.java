@@ -49,12 +49,15 @@ public class CheckersAI {
 	public MovePiece makeRiskyMove(){
 	    
 	    int theMove = 0;
-	    riskyMoves = new Vector();
+	    riskyMoves = new Vector<MovePiece>();
 	    riskyMoves = currentBoard.getLegalMovesAI(3);
+	    
+	    if(riskyMoves.size() > 0){
 	    theMove = rand.nextInt(riskyMoves.size());
+	       return riskyMoves.get(theMove);
+	    }
 	    
 	    
-	    
-	    return riskyMoves.get(theMove);
+	   return null;
 	}
 }
