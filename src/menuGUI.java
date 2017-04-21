@@ -152,7 +152,7 @@ public class menuGUI extends JPanel implements ActionListener {
         //Start the AI:
         checkersAI = new CheckersAI(checkerGame);
         checkersAI.setCurrentBoard(checkerGame);
-        over = false; 
+        this.over = false; 
         input = JOptionPane.showInputDialog ( "Type '1' for 1 player or '2' player"); 
 
     }
@@ -645,7 +645,6 @@ public class menuGUI extends JPanel implements ActionListener {
                             }
 
                             checkersAI.setCurrentBoard(checkerGame);
-                            aiMovement = checkersAI.makeRiskyMove();
                             refreshBoard();
                             this.revalidate();
                             this.repaint();
@@ -653,7 +652,7 @@ public class menuGUI extends JPanel implements ActionListener {
                                 aiMovement = checkersAI.makeRiskyMove();
                             }
 
-                            if ( aiMovement != null && input.equalsIgnoreCase("1") && ((turnCounter % 2 == 1) && ((checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 3)
+                            if ( aiMovement != null && !this.over && aiMovement != null && input.equalsIgnoreCase("1") && ((turnCounter % 2 == 1) && ((checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 3)
                                     || (checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 4)))) {
                                 //reset value of jump
                                 jump = false;
