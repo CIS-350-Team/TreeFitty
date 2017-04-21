@@ -1,5 +1,5 @@
 /*******************************************************
- * Connect Four Class
+ * Connect Four Class.
  * This holds all methods and logic for playing the game
  * @author Joel Brodzinski
  ********************************************************/
@@ -11,14 +11,26 @@ public class ConnectFour{
      * track of the player.
      **************************************************/
     private static final int EMPTY = 0;
+    /****************************
+     * Red Piece Value.
+     * **************************/
     private static final int RED = 1;
+    /****************************
+     * Black Piece Value.
+     * **************************/
     private static final int BLACK = 2;
+    /****************************
+     * Board Integer.
+     * **************************/
     private int[][] board;
+    /****************************
+     * R.
+     * **************************/
     private int player;
 
     /***************************************************
      * Connect four constructor, instantiates a new array
-     * of the board, and sets the spaces as empty
+     * of the board, and sets the spaces as empty.
      **************************************************/
     public ConnectFour(){
         board = new int [7][7];
@@ -40,16 +52,22 @@ public class ConnectFour{
 
 
     /***************************************************
-     * Get Board Piece
+     * Get Board Piece.
+     * @param x board at row
+     * @param y board at column
+     * @return board board piece 
      **************************************************/
-    public int pieceAt(int x, int y){
+    public int pieceAt(final int x, final int y){
         return board[x][y];
     }
 
     /***************************************************
-     * Get Board Piece
+     * Get Board Piece.
+     * @param x set piece at x
+     * @param y set piece at y
+     * @param piece type of piece to create
      **************************************************/
-    public void setPieceAt(int x, int y, int piece){
+    public void setPieceAt(final int x,final  int y, final int piece){
         this.board[x][y] = piece;
     }
 
@@ -57,10 +75,10 @@ public class ConnectFour{
 
     /***************************************************
      * Move- this method takes a column from the menu
-     * class and places the current player's piece there,
-     * @param int col - the column the user wishes to 
+     * class and places the current player's piece there.
+     * @param col the column the user wishes to 
      * place the next piece.
-     * @return boolean - whether the move was made.
+     * @return boolean  whether the move was made.
      **************************************************/
     public boolean move(int col){
 
@@ -74,16 +92,16 @@ public class ConnectFour{
     }
     
     /***************************************************
-     * set Board - sets the current game board
-     * @param int[][] - sets game board to incoming board
+     * set Board - sets the current game board.
+     * @param b Sets game board to incoming board
      **************************************************/
     public void setBoard(int[][] b){
         board = b;
     }
 
     /***************************************************
-     * get Board - returns the game board
-     * @return int[][] board - returns the board
+     * get Board - returns the game board.
+     * @return board - returns the board
      **************************************************/
 
     public int[][] getBoard(){
@@ -92,18 +110,19 @@ public class ConnectFour{
 
     /***************************************************
      * change Player - this method changes the players
-     * turn
+     * turn.
      **************************************************/
     public void changePlayer(){
         if(player == RED){
             player = BLACK;
-        }else
+        } else {
             player = RED;
+        }
     }
 
     /***************************************************
-     * set Player - This method lets you set whose turn
-     * @param int p - the player (1 for red, 2 for black).
+     * set Player - This method lets you set whose turn.
+     * @param p - the player (1 for red, 2 for black).
      **************************************************/
     public void setPlayer(int p){
         if(p == 1 || p == 2){
@@ -121,8 +140,8 @@ public class ConnectFour{
 
     /***************************************************
      * getSpot - this method takes a column, and returns
-     * the highest pieces'(the last played) row
-     * @param int col - the column the last move was made
+     * the highest pieces'(the last played) row.
+     * @param col - the column the last move was made
      * @return int row - returns the row found plus 1
      * (incrimented for the board[][] in menu that has
      * the first row as arrows.

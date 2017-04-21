@@ -8,26 +8,32 @@ import java.util.Random;
  *****************************************************************/
 public class CheckersAI {
 	
-	/* Random generator used to pick which move the AI makes */
-	Random rand = new Random();
+   /****************************
+   * rand value.
+   * **************************/
+	private Random rand = new Random();
 	
-	/* the board that the AI uses to decide what move it will make */
+	   /****************************
+	   * Checkerboard value.
+	   * **************************/
 	private CheckerBoard currentBoard;
 	
-	/* a copy of just the board from currentBoard */
-	
-	/* an array to save all the safe moves the player can make */
+	   /****************************
+	   * riskyMoves vector.
+	   * **************************/
 	private Vector<MovePiece> riskyMoves;
 	
 	/**************************************************************
-     * Set the currentBoard
+     * Set the currentBoard.
+     * @param updateBoard Sets the board
      **************************************************************/
 	public void setCurrentBoard(CheckerBoard updateBoard){
 	    currentBoard = updateBoard;
 	}
 	
 	/**************************************************************
-     * Get the current Board
+     * Get the current Board.
+     * @return current Board setup
      **************************************************************/
 	public CheckerBoard getCurrentBoard(){
 	    return currentBoard;
@@ -36,7 +42,7 @@ public class CheckersAI {
 	/**************************************************************
 	 * Constructor to set the current board state for the AI to work
 	 * with.
-	 * 
+	 * @param newBoard Constructs a new board
 	 **************************************************************/
 	public CheckersAI(CheckerBoard newBoard){
 		// set current board to the desired board
@@ -44,7 +50,8 @@ public class CheckersAI {
 	}
 	
 	 /**************************************************************
-     * Method to Move AI randomly
+     * Method to Move AI randomly.
+     * @return Possible moves
      **************************************************************/
 	public MovePiece makeRiskyMove(){
 	    

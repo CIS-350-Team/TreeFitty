@@ -5,11 +5,15 @@
  *
  *****************************************************************/
 public class MovePiece {
-	/* starting tile */
-	int fromRow, fromCol;
+    /****************************
+     * Starting Tile.
+     * **************************/
+	public int fromRow, fromCol;
 
-	/* ending tile */
-	int toRow, toCol;
+    /****************************
+     * Ending tile.
+     * **************************/
+	public int toRow, toCol;
 
 	/*************************************************************
 	 * Constructor used to set the instance variables to desired
@@ -25,10 +29,10 @@ public class MovePiece {
 	/*************************************************************
 	 * Constructor used to set the instance variables to desired
 	 * values.
-	 * @param r1
-	 * @param r2
-	 * @param c1
-	 * @param c2
+	 * @param r1 row 1
+	 * @param r2 row 2
+	 * @param c1 column 1
+	 * @param c2 column 2
 	 ************************************************************/
 	public MovePiece(int r1, int c1, int r2, int c2) {
 		fromRow = r1;
@@ -39,10 +43,10 @@ public class MovePiece {
 
 	/*************************************************************
 	 * Set Movement.
-	 * @param r1
-     * @param r2
-     * @param c1
-     * @param c2
+     * @param r1 row 1
+     * @param r2 row 2
+     * @param c1 column 1
+     * @param c2 column 2
 	 ************************************************************/
 	public void setMove(int r1, int c1, int r2, int c2){
 		this.fromRow = r1;
@@ -56,16 +60,12 @@ public class MovePiece {
 	 * @return boolean
 	 ************************************************************/
 	public boolean isJump() {
-		if(fromRow - toRow == 2 || fromRow - toRow == -2){
-			return true;
-		}else{
-			return false;
-		}
+		return fromRow - toRow == 2 || fromRow - toRow == -2;
 	}
 
 	 /*************************************************************
      * Setter Method for fromRow.
-     * @param x
+     * @param x row
      ************************************************************/
 	public void setFromRow(int x){
 	    this.fromRow = x;
@@ -73,7 +73,7 @@ public class MovePiece {
 
 	 /*************************************************************
      * Setter Method for fromCol.
-     * @param x
+     * @param x col
      ************************************************************/
     public void setFromCol(int x){
         this.fromCol = x;
@@ -81,7 +81,7 @@ public class MovePiece {
 
     /*************************************************************
      * Setter Method for toRow.
-     * @param x
+     * @param x row
      ************************************************************/
     public void setToRow(int x){
         this.toRow = x;
@@ -89,14 +89,15 @@ public class MovePiece {
 
     /*************************************************************
      * Setter Method for toCol.
-     * @param x
+     * @param x to Column
      ************************************************************/
     public void setToCol(int x){
         this.toCol = x;
     }
 
     /*************************************************************
-     * Geter Method for fromRow
+     * Geter Method for fromRow.
+     * @return from Row
      ************************************************************/
 	public int getFromRow(){
 	    return this.fromRow;
@@ -104,6 +105,7 @@ public class MovePiece {
 
 	 /*************************************************************
      * Setter Method for fromCol.
+     * @return fromCol column
      ************************************************************/
     public int getFromCol(){
         return this.fromCol;
@@ -111,13 +113,15 @@ public class MovePiece {
     
     /*************************************************************
      * Getter Method for toRow.
+     * @return toRow toRow
      ************************************************************/
-    public int getToRow(){
+    public int getToRow() {
         return this.toRow;
     }
     
     /*************************************************************
      * Getter Method for toColumn.
+     * @return column column #
      ************************************************************/
     public int getToCol(){
         return this.toCol;

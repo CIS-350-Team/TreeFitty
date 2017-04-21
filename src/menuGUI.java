@@ -16,37 +16,97 @@ import java.util.ArrayList;
  **********************************************************/
 public class menuGUI extends JPanel implements ActionListener {
 
-    //Instance Variables
+    /****************************
+     * Instance variables of Jpanel.
+     * **************************/
     private JPanel top, main, middle, checkerPanel, connectFourPanel;
+    /****************************
+     * Instance variables.
+     * **************************/
     private JLabel title;
+    /****************************
+     * Instance variables.
+     * **************************/
     private JButton back, quit, checkers, connectFour, open, save;
+    /****************************
+     * Instance variables.
+     * **************************/
     private ImageIcon checkerImage, connectFourImage;
+    /****************************
+     * Instance variables.
+     * **************************/
     private ImageIcon arrow, boardWhite, boardRed, boardBlack;
+    /****************************
+     * Instance variables.
+     * **************************/
     private ImageIcon whitePiece, orangePiece, kingWhite, kingOrange;
+    /****************************
+     * Instance variables.
+     * **************************/
     private GameMode mode;
+    /****************************
+     * Instance variables.
+     * **************************/
     private JButton[][] board;
+    /****************************
+     * Instance variables.
+     * **************************/
     private JButton[][] boardTwo;
+    /****************************
+     * Instance variables.
+     * **************************/
     private CheckerBoard checkerGame;
+    /****************************
+     * Instance variables.
+     * **************************/
     private MovePiece[] moves, doubleJumps;
 
-    //Movement
+    /****************************
+     * Instance variables.
+     * **************************/
     private int turnCounter = 0;
+    /****************************
+     * Instance variables.
+     * **************************/
     private MovePiece checkersMovement;
+    /****************************
+     * Instance variables.
+     * **************************/
     private MovePiece aiMovement;
+    /****************************
+     * Instance variables.
+     * **************************/
     private int origX = -1;
+    /****************************
+     * Instance variables.
+     * **************************/
     private int origY = -1;
 
-    //Connect Four:
+    /****************************
+     * Instance variables.
+     * **************************/
     private ConnectFour connectF;
 
-    //Create AI:
+    /****************************
+     * Instance variables.
+     * **************************/
     private ConnectFourAI ai;
+    /****************************
+     * Instance variables.
+     * **************************/
     private CheckersAI checkersAI;
+    /****************************
+     * Instance variables.
+     * **************************/
     private String input;
+    /****************************
+     * Instance variables.
+     * **************************/
     private boolean over; 
 
     /*********************************************************
      * Constructor for GUI for both Games.
+     * @throws IOException Error throw
      **********************************************************/
     public menuGUI() throws IOException{
         //Initialize mode
@@ -153,7 +213,7 @@ public class menuGUI extends JPanel implements ActionListener {
         checkersAI = new CheckersAI(checkerGame);
         checkersAI.setCurrentBoard(checkerGame);
         this.over = false; 
-        input = JOptionPane.showInputDialog ( "Type '1' for 1 player or '2' player"); 
+        input = JOptionPane.showInputDialog("Type '1' for 1 player or '2' player");
 
     }
 
@@ -261,7 +321,7 @@ public class menuGUI extends JPanel implements ActionListener {
     }
 
     /*********************************************************
-     * Method: Save the Current Game
+     * Method: Save the Current Game.
      **********************************************************/
     public void saveFile(){
 
@@ -273,7 +333,7 @@ public class menuGUI extends JPanel implements ActionListener {
         if(mode == GameMode.CHECKERSMODE){
 
             fileName = "";
-            fileName = JOptionPane.showInputDialog ( "Save file as:"); 
+            fileName = JOptionPane.showInputDialog("Save file as:"); 
 
             if(fileName != null){
                 fileName = fileName.concat(".txt");
@@ -316,7 +376,7 @@ public class menuGUI extends JPanel implements ActionListener {
         if(mode == GameMode.CONNECTFOURMODE){
 
             fileName = "";
-            fileName = JOptionPane.showInputDialog ( "Save file as:"); 
+            fileName = JOptionPane.showInputDialog("Save file as:");
 
             if(fileName != null){
                 fileName = fileName.concat(".txt");
@@ -351,7 +411,10 @@ public class menuGUI extends JPanel implements ActionListener {
     }
 
     /*************************************************
-     * Method to read the file
+     * Method to read the file.
+     * @return sb string
+     * @throws IOException error
+     * @param fileName file Save Name
      **************************************************/
     public String readFile(String fileName) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
@@ -371,7 +434,7 @@ public class menuGUI extends JPanel implements ActionListener {
     }
 
     /*********************************************************
-     * Method: Open a Game
+     * Method: Open a Game.
      **********************************************************/
     public void openFile(){
 
@@ -382,7 +445,7 @@ public class menuGUI extends JPanel implements ActionListener {
 
         //In Checkers mode
         if(mode == GameMode.CHECKERSMODE){
-            openFile = JOptionPane.showInputDialog("Enter file name: " );
+            openFile = JOptionPane.showInputDialog("Enter file name: ");
 
             if(openFile != null){
                 openFile = openFile.concat(".txt");
@@ -420,7 +483,7 @@ public class menuGUI extends JPanel implements ActionListener {
                 }              
                 for(int x = 0; x < 8; x++){
                     for(int y = 0; y < 8; y++){
-                        checkerGame.setPieceAt(x, y, checkerPosition.get( ((x*8)+y) ) );
+                        checkerGame.setPieceAt(x, y, checkerPosition.get(((x*8)+y)));
                     }
                 }
                 refreshBoard();
@@ -432,7 +495,7 @@ public class menuGUI extends JPanel implements ActionListener {
 
         //In Connect Four mode
         if(mode == GameMode.CONNECTFOURMODE){
-            openFile = JOptionPane.showInputDialog("Enter file name: " );
+            openFile = JOptionPane.showInputDialog("Enter file name: ");
 
             if(openFile != null){
                 openFile = openFile.concat(".txt");
@@ -513,6 +576,7 @@ public class menuGUI extends JPanel implements ActionListener {
 
     /*********************************************************
      * Method: Decides what happens when buttons are clicked.
+     * @param event click event
      **********************************************************/
     public void actionPerformed(ActionEvent event){
         Component buttonPressed = (JComponent) event.getSource();
@@ -588,7 +652,7 @@ public class menuGUI extends JPanel implements ActionListener {
                                         end = true;
                                     }
                                 }
-                                if (jump == false && end == true) {
+                                if (jump == false && end == true){
                                     this.turnCounter++;
                                 } else if (jump) {
                                     // Double Jump
@@ -652,7 +716,7 @@ public class menuGUI extends JPanel implements ActionListener {
                                 aiMovement = checkersAI.makeRiskyMove();
                             }
 
-                            if ( aiMovement != null && !this.over && aiMovement != null && input.equalsIgnoreCase("1") && ((turnCounter % 2 == 1) && ((checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 3)
+                            if (aiMovement != null && !this.over && aiMovement != null && input.equalsIgnoreCase("1") && ((turnCounter % 2 == 1) && ((checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 3)
                                     || (checkerGame.pieceAt(aiMovement.fromRow, aiMovement.fromCol) == 4)))) {
                                 //reset value of jump
                                 jump = false;
@@ -730,8 +794,7 @@ public class menuGUI extends JPanel implements ActionListener {
                         if(connectF.checkWin() == 1){
                             JOptionPane.showInputDialog("Red Won");
                             resetBoard();
-                        }
-                        else if(connectF.getPlayer() == 2){
+                        }else if(connectF.getPlayer() == 2){
                             if(ai.aiMove()){
                                 
                                 updateDisplay();
@@ -739,8 +802,7 @@ public class menuGUI extends JPanel implements ActionListener {
                                 if(connectF.checkWin() == 2){
                                     JOptionPane.showInputDialog("Black Won");
                                     resetBoard();
-                                }
-                                else{
+                                }else{
                                     connectF.changePlayer();
                                 }
                             }

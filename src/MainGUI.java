@@ -10,6 +10,11 @@ import javax.swing.JFrame;
  * CIS 350 Project Release 1
  **********************************/
 public class MainGUI {
+    /****************************
+     * Main. @author staddlez
+     * @param args none
+     * @throws IOException error
+     * **************************/
     public static void main(String[] args) throws IOException{
         /* Frame for the Game */
         JFrame frame = new JFrame("The Games");

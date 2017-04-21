@@ -1,45 +1,54 @@
 import java.util.Random;
+/****************************
+ * Connect Four AI.
+ * @version 1
+ * @author staddlez 
+ * **************************/
 public class ConnectFourAI {
 /*********************************************************
  * This is the ai class for connect four.
  * @author Joel Brodzinski
  ********************************************************/
-    Random ran = new Random();
-    ConnectFour connectF;
-    ConnectFour temp;
+    private Random ran = new Random();
+    /****************************
+     * Connect Four.
+     * **************************/
+    private ConnectFour connectF;
+    /****************************
+     * Temp variable.
+     * **************************/
+    private ConnectFour temp;
     
     /****************************************************
      * Instance variables for the ai.
      ***************************************************/
-    private int[][] boardOne = new int[7][7];
+    private static final int seven = 7;
+    /****************************
+     * board.
+     * **************************/
+    private int[][] boardOne = new int[seven][seven];
+    /****************************
+     * Empty value.
+     * **************************/
     private static final int EMPTY = 0;
-    private static final int RED = 1;
-    private static final int BLACK = 2;
+
 
     /****************************************************
-     * Constructor, sets the board uses the Connect four
-     * @param ConnectFour- takes a connect four instance
+     * Constructor, sets the board uses the Connect four.
      * (the same instance from the menuGUI) and keeps it's
      * own reference.
+     * @param f Type of Connect4 Game.
      ***************************************************/
     public ConnectFourAI(ConnectFour f){
-        for(int i = 0; i < 7; i++){
-            for(int j = 0; j < 7; j++){
+        for(int i = 0; i < seven; i++){
+            for(int j = 0; j < seven; j++){
                 boardOne[i][j] = EMPTY;
             }
         }
         connectF = f;
         temp = new ConnectFour();
     }
-    
-    /****************************************************
-     * set Board- this method sets the game board to be 
-     * used in the ai.
-     * @param int[][]- takes a board in to set the board
-     ***************************************************/
-    private void setBoard(int[][] b){
-        boardOne = b;
-    }
+
 
     /****************************************************
      * ai Move- uses copy of the instance, and trys out 
@@ -47,7 +56,7 @@ public class ConnectFourAI {
      * @return boolean returns if a move was made.
      ***************************************************/
     public boolean aiMove(){
-//        for(int i = 0; i < 7; i++){
+//        for(int i = 0; i < seven; i++){
 //            temp.setBoard(connectF.getBoard());
 //            temp.setPlayer(2);
 //            if(temp.move(i)){
@@ -57,9 +66,9 @@ public class ConnectFourAI {
 //                }
 //            }
 //        }
-        int x = ran.nextInt(7);
-        while(connectF.move(x) == false){
-            x = ran.nextInt(7);
+        int x = ran.nextInt(seven);
+        while(!connectF.move(x)){
+            x = ran.nextInt(seven);
         }
         
        
