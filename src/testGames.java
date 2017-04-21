@@ -5,7 +5,7 @@ import org.junit.Test;
 public class testGames {
 
     @Test
-    public void testMovementOne() {
+    public void testCheckersMovementOne() {
         CheckerBoard checkerGame = new CheckerBoard();
         MovePiece move = new MovePiece();
         move.setMove(5, 5, 4, 4);
