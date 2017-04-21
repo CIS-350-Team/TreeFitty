@@ -765,7 +765,6 @@ public class menuGUI extends JPanel implements ActionListener {
             }
         }
     }
-
     /***************************************************
      * reset Board, when a game is over, resets the board
      * for next game.
